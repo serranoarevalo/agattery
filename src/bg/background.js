@@ -1,13 +1,19 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
+function checkBattery(){
+        navigator.getBattery().then(function(battery){
+            var level = battery.level * 100;
+            var charging = battery.charging;
+            if(charging && level === 100){
+                chrome.notifications.create({
+                  type:"basic",
+                  iconUrl: "/icons/icon48.png",
+                  title:"Agattery",
+                  message: "Hi love! Unplug your battery ❤️",
+                })
+            }
+        }
+    )
+}
 
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
-
-
-//example of using a message handler from the inject scripts
-chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-  	chrome.pageAction.show(sender.tab.id);
-    sendResponse();
-  });
+setInterval(function(){
+    checkBattery()
+}, 60000)
